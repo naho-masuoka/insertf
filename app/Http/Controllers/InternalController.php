@@ -40,8 +40,7 @@ class InternalController extends Controller
 
     public function upload(Request $request){
         $genre_file_id=$request->file_id;
-        $exists = Storage::disk('public')->exists('/files/'.$genre_file_id);
-        dd(Storage::disk('public'));      
+        $exists = Storage::disk('public')->exists('/files/'.$genre_file_id);    
         $directory = '/public/files/'.$genre_file_id;
         $files = $request->file('files');
         
