@@ -42,7 +42,13 @@ class ProjectController extends Controller
                 $projects=Project::orderbyDESC('id')->get();
             }         
         }
-        return view('projects.projects',compact('departments','projects',));
+        
+        if($projects->count() == 0 || $projects->count() <> 1){
+            $p = null;
+        }elseif($projects->count() == 1){
+            $p = $projects[0];
+        }
+        return view('projects.projects',compact('departments','projects','p'));
     }    
     public function updateproject(Request $request){
         $this->validate($request, [

@@ -15,7 +15,6 @@ use DB;
 class Genre_fileController extends Controller
 {    
     public function index(Request $request){
-         //dd($request);
         if(isset($request->genre_file_id)){
             $id=$request->genre_file_id;
             

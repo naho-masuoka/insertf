@@ -1,21 +1,13 @@
 @extends('layouts.app')
 @section('content')
-<?php
-    $user=Auth::user();
-    if($projects->count() == 1){
-        $p=$projects[0];
-    }else{
-        $p=null;
-    }
 
-?>
 <div class="container-fluid">
     <div class="row">
         <!--　左サイド　-->
         <div class="col-sm-4 col-md-2">
             <div class="d-none d-md-block">
                 <div class="card mx-auto mb-2" style="width: 20rem;">
-                    @if(!isset($project))
+                    @if($p<>null)
                         <h5 class="card-title text-center mt-3" style="margin-bottom:0;font-weight:bold;">表示物件</h5>
                     @else
                         <h5 class="card-title text-center mt-3" style="margin-bottom:0;font-weight:bold;">物件内容</h5>
@@ -26,7 +18,7 @@
                             <div class="col">
                                 <input type="text" name="id" class="form-control @error('id') is-invalid @enderror"
                                     placeholder="ID"
-                                    value="{{ old('id', isset($project)==true ? $project->id : '') }}">
+                                    value="{{ old('id', $p<>null ? $p->id : '') }}">
                                 <div class="invalid-feedback">
                                     @error('id')
                                     <div><small>{{ $message }}</small></div>
@@ -37,7 +29,7 @@
                             <div class="col">
                                 <input type="text" name="prepareid"
                                     class="form-control @error('prepareid') is-invalid @enderror" placeholder="E番"
-                                    value="{{ old('prepareid', isset($project)==true ? $project->prepareid : '') }}">
+                                    value="{{ old('prepareid', $p<>null ? $p->prepareid : '') }}">
                                 <div class="invalid-feedback">
                                     @error('prepareid')
                                     <div><small>{{ $message }}</small></div>
@@ -48,7 +40,7 @@
                             <div class="col">
                                 <input type="text" name="projectid"
                                     class="form-control @error('projectid') is-invalid @enderror" placeholder="工事番号"
-                                    value="{{ old('projectid', isset($project)==true ? $project->projectid : '') }}">
+                                    value="{{ old('projectid', $p<>null ? $p->projectid : '') }}">
                                 <div class="invalid-feedback">
                                     @error('projectid')
                                     <div><small>{{ $message }}</small></div>
@@ -59,7 +51,7 @@
                             <div class="col">
                                 <input type="text" name="machineid"
                                     class="form-control @error('machineid') is-invalid @enderror" placeholder="機械番号"
-                                    value="{{ old('machineid', isset($project)==true ? $project->machineid : '') }}">
+                                    value="{{ old('machineid', $p<>null ? $p->machineid : '') }}">
                                 <div class="invalid-feedback">
                                     @error('machined')
                                     <div><small>{{ $message }}</small></div>
@@ -69,11 +61,11 @@
                             </div>
                             <div class="col">
                                 <input type="text" name="customer" class="form-control" placeholder="契約先"
-                                    value="{{ old('customer', isset($project)==true ? $project->customer: '') }}">
+                                    value="{{ old('customer', $p<>null ? $p->customer: '') }}">
                             </div>
                             <div class="col">
                                 <input type="text" name="enduser" class="form-control" placeholder="納入先"
-                                    value="{{ old('enduser', isset($project)==true ? $project->enduser : '') }}">
+                                    value="{{ old('enduser', $p<>null ? $p->enduser : '') }}">
                             </div>
                             <div class="col">
                                 <button type="submit" class="form-control btn mt-2 mybtn">登録</button>
@@ -89,10 +81,10 @@
                                 {{ csrf_field() }}
                                 <input type="hidden" name="prepareid"
                                     class="form-control @error('prepareid') is-invalid @enderror"
-                                    value="{{ old('prepareid', $projects->count()==1 ? $projects[0]->prepareid : '') }}">
+                                    value="{{ old('prepareid', $p<>null ? $p->prepareid : '') }}">
                                 <input type="hidden" name="id"
                                     class="form-control @error('projectidd') is-invalid @enderror"
-                                    value="{{ old('id', $projects->count()==1 ? $projects[0]->id : '') }}">
+                                    value="{{ old('id',  $p<>null ? $p->id : '') }}">
                                 <div class="invalid-feedback text-center">
                                     @error('id')
                                     <div>
@@ -103,12 +95,12 @@
                                 </div>
                                 @if(isset($project)==true)
                                 <div class="text-center">
-                                    <h6 class="p-1" style="font-weight:bold;">物件番号:{{ $projects[0]->prepareid }}</h6>
+                                    <h6 class="p-1" style="font-weight:bold;">物件番号:{{ $p->prepareid }}</h6>
                                 </div>
                                 @endif
                                 <div class="form-group d-flex justify-content-center" style="margin-bottom:0;">
                                     <select id="Select1" class="form-group form-control" onchange="selectboxChange()">
-                                        @foreach($user->department->documents as $document)
+                                        @foreach(Auth::user()->department->documents as $document)
                                         {{$document}}
                                         <option value="{{ $document->name }}">{{ $document->name }}</option>
                                         @endforeach
@@ -129,8 +121,7 @@
                                 </div>
                                 <div><small>ファイル名を変更する場合は↓↓↓を変更</small></div>
                                 <input type="text" id="text2" name="file_name"
-                                    class="form-group form-control @error('file_name') is-invalid @enderror"
-                                    value="{{ old('file_name', $projects->count()==1 ? $user->department->documents[0]->name : '')}}">
+                                    class="form-group form-control @error('file_name') is-invalid @enderror" value={{Auth::user()->department->documents[0]->name}}>
                                 <div class="invalid-feedback">
                                     @error('file')
                                     <div><small>{{ $message }}</small></div>
@@ -148,7 +139,7 @@
                     </div>
                 @endif
                 @if($p <> null)<!--完成図書 -->
-                    @if($user->department_id == 3) 
+                    @if(Auth::user()->department_id == 3) 
                         <div class="card mx-auto mb-2" style="width: 20rem;">
                             <h5 class="card-title text-center mt-3" style="margin-bottom:0;font-weight:bold">完成図書</h5>
                             <div class="card-body">
@@ -156,7 +147,7 @@
                                     {{ csrf_field() }}
                                     <input type="hidden" name="id"
                                         class="form-group @error('id') is-invalid @enderror"
-                                        value="{{ old('prepareid', $projects->count()==1 ? $projects[0]->id : '') }}">
+                                        value="{{ old('prepareid', $p <> null ? $p->id : '') }}">
                                     <div class="invalid-feedback text-center">
                                         @error('id')
                                         <div>
@@ -165,9 +156,9 @@
                                         @enderror
                                         <br>
                                     </div>
-                                    @if($projects->count()==1)
+                                    @if($p <> null)
                                         <div class="text-center">
-                                            <h6 class="p-1" style="font-weight:bold;">プロジェクト:{{ $projects[0]->projectid }}</h6>
+                                            <h6 class="p-1" style="font-weight:bold;">プロジェクト:{{ $p->projectid }}</h6>
                                         </div>
                                     @endif
                                     <div class="invalid-feedback">
@@ -282,7 +273,7 @@
                             <th style="width:55%;border: none;font-weight:bold">memo
                             <th>
                         </tr>
-                        @if($projects->count() == 1)
+                        @if($p<>null)
                             @foreach($project->claims as $claim)
                             
                                 <tr>
@@ -406,13 +397,13 @@
                                             {{ csrf_field() }}
                                             <button type=submit class="btn ml-3 mb-1" name="btn"
                                                 style="background-color:#7EDCC4;color:#001871; font-weight:bold;padding-bottom:0;">削除</button>
-                                                <input type="hidden" name="project_id" value="{{ $projects[0]->id }}">    
+                                                <input type="hidden" name="project_id" value="{{ $p->id }}">    
                                             <input type="hidden" name="fid" value="{{ $item->id }}">
                                             <input type="hidden" name="fname"
-                                                value="{{'/public/projects/'. $projects[0]->id . '/'.$department->id.'/' . $item->name.'_'.$item->branch.'.'.$item->extension }}">
+                                                value="{{'/public/projects/'. $p->id . '/'.$department->id.'/' . $item->name.'_'.$item->branch.'.'.$item->extension }}">
                                         </form>
                                     @endif
-                                    <a href="{{ asset('/storage/projects/'. $projects[0]->id . '/'.$department->id. '/' . $item->name.'_'.$item->branch.'.'.$item->extension ) }}"
+                                    <a href="{{ asset('/storage/projects/'. $p->id . '/'.$department->id. '/' . $item->name.'_'.$item->branch.'.'.$item->extension ) }}"
                                         class="ml-3">
                                         <li class="ml-2" style="list-style: none;">{{ $item->name }}</li>
                                     <a>
