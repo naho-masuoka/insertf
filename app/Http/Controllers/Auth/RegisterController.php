@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 use App\User;
 use App\Department;
-
+use Auth;
 
 class RegisterController extends Controller
 {
@@ -36,14 +36,17 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'department_id' => $request->department_id,
             'password' => Hash::make($request->password),
         ]);
+        
 
-        return redirect('/list');
+        if(Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])){
+            return redirect()->route('project.index');
+        }
         
     }
 

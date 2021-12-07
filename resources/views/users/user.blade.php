@@ -26,8 +26,12 @@
         <div class="form-group">
             <label>部署1</label>
             <select id="Select1" name="department_id" class="form-group form-control">        
-                @foreach($departments as $department)  
+                @foreach($departments as $department)
+                    @if(Auth::user()->department_id ==$department->id) 
+                    <option value="{{ $department->id }}" selected>{{ $department->name1 .' '. $department->name2}}</option>
+                    @else
                     <option value="{{ $department->id }}">{{ $department->name1 .' '. $department->name2}}</option>
+                    @endif
                 @endforeach
             </select>
         </div>

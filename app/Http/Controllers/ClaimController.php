@@ -41,6 +41,7 @@ class ClaimController extends Controller
     }
     
     public function store(Request $request){
+        
         if($request->claim_id == null){             
             //claim_create
             $project_id = $request->project_id;            
@@ -85,7 +86,9 @@ class ClaimController extends Controller
         $files = $request->file('files');
 
         if($files<>null){            
-            foreach ($files as $file) {            
+            foreach ($files as $file) { 
+                $image = base64_encode(file_get_contents($file->getRealPath())); 
+                         
                 $extension= $file->getClientOriginalExtension();
                 $filename=basename( $file->getClientOriginalName(),'.'.$extension );  
                 $name = $filename;
@@ -97,7 +100,7 @@ class ClaimController extends Controller
                     $branch=$item;
                     
                 }
-                Item::create(compact('department_id', 'project_id', 'claim_id', 'name', 'branch','extension', 'genre_id',));
+                Item::create(compact('department_id', 'project_id', 'claim_id', 'image','name', 'branch','extension', 'genre_id',));
                 $name=$name.'_'.$branch.'.'.$extension;
                 Storage::putFileAs($directory,$file,$name); 
             }

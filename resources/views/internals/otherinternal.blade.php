@@ -83,8 +83,8 @@
                                 {{$f->name}}
                                 </a>
                             </li>
-                            @endforeach 
-                        @endforeach 
+                        @endforeach
+                    @endforeach                    
                 </ul>
 
                 <div class="tab-content">

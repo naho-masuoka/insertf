@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#001871;">
 @auth       
-    <a class="navbar-brand" href="/list">Sample</a>
+    <a class="navbar-brand" href="/list">Top</a>
 @endauth
 @guest
-    <a class="navbar-brand" href="/">Sample</a>
+    <a class="navbar-brand" href="/">Top</a>
     
 @endguest
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

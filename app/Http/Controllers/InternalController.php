@@ -61,7 +61,5 @@ class InternalController extends Controller
             $departments = Department::where('id','<>',auth::user()->department_id)->get();
             return view('internals.internal',compact('genre_files','departments'));
         }
-
-    } 
-
+    }
 }

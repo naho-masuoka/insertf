@@ -7,7 +7,7 @@ use App\Claim;
 use App\Department;
 class Item extends Model
 {
-    protected $fillable = ['department_id', 'project_id', 'claim_id', 'name','branch','extension','genre','genre_id'];
+    protected $fillable = ['department_id', 'project_id', 'claim_id','name','branch','extension','genre','genre_id'];
 
     public function claim(){
         return $this->belongsTo(Department::Class);
